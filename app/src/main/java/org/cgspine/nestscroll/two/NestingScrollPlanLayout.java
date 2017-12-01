@@ -9,6 +9,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Scroller;
 
 import org.cgspine.nestscroll.R;
@@ -19,7 +20,7 @@ import org.cgspine.nestscroll.Util;
  * @date 2016-12-28
  */
 
-public class NestingScrollPlanLayout extends ViewGroup implements NestedScrollingParent {
+public class NestingScrollPlanLayout extends LinearLayout implements NestedScrollingParent {
     private static final String TAG = "NestingScrollPlanLayout";
 
     private int mHeaderViewId = 0;
@@ -103,39 +104,6 @@ public class NestingScrollPlanLayout extends ViewGroup implements NestedScrollin
             return headerIndex;
         }
         return i;
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        ensureHeaderViewAndScrollView();
-        int scrollMeasureWidthSpec = MeasureSpec.makeMeasureSpec(
-                getMeasuredWidth() - getPaddingLeft() - getPaddingRight(), MeasureSpec.EXACTLY);
-        int scrollMeasureHeightSpec = MeasureSpec.makeMeasureSpec(
-                getMeasuredHeight() - getPaddingTop() - getPaddingBottom(), MeasureSpec.EXACTLY);
-        mTargetView.measure(scrollMeasureWidthSpec, scrollMeasureHeightSpec);
-        measureChild(mHeaderView, widthMeasureSpec, heightMeasureSpec);
-    }
-
-    @Override
-    protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        final int width = getMeasuredWidth();
-        final int height = getMeasuredHeight();
-        if (getChildCount() == 0) {
-            return;
-        }
-        ensureHeaderViewAndScrollView();
-
-        final int childLeft = getPaddingLeft();
-        final int childTop = getPaddingTop();
-        final int childWidth = width - getPaddingLeft() - getPaddingRight();
-        final int childHeight = height - getPaddingTop() - getPaddingBottom();
-        mTargetView.layout(childLeft, childTop + mTargetCurrentOffset,
-                childLeft + childWidth, childTop + childHeight + mTargetCurrentOffset);
-        int headerViewWidth = mHeaderView.getMeasuredWidth();
-        int headerViewHeight = mHeaderView.getMeasuredHeight();
-        mHeaderView.layout((width / 2 - headerViewWidth / 2), mHeaderCurrentOffset,
-                (width / 2 + headerViewWidth / 2), mHeaderCurrentOffset + headerViewHeight);
     }
 
     @Override

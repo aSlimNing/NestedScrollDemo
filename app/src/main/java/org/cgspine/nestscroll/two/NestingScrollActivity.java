@@ -14,6 +14,7 @@ import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebView;
 import android.widget.TextView;
 
 import org.cgspine.nestscroll.MyRecyclerAdapter;
@@ -29,7 +30,7 @@ public class NestingScrollActivity extends AppCompatActivity {
     private Toolbar mToolbar;
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
-    private SparseArray<RecyclerView> mPageMap = new SparseArray<>();
+    private SparseArray<View> mPageMap = new SparseArray<>();
 
 
     @Override
@@ -56,14 +57,22 @@ public class NestingScrollActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private RecyclerView getPageView(int pos) {
-        RecyclerView view = mPageMap.get(pos);
+    private View getPageView(int pos) {
+        View view = mPageMap.get(pos);
         if (view == null) {
-            RecyclerView recyclerView = new RecyclerView(this);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            recyclerView.setAdapter(new MyRecyclerAdapter());
-            mPageMap.put(pos, recyclerView);
-            return recyclerView;
+            if(pos!=0){
+                RecyclerView recyclerView = new RecyclerView(this);
+                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                recyclerView.setAdapter(new MyRecyclerAdapter());
+                mPageMap.put(pos, recyclerView);
+                return recyclerView;
+            }
+            else {
+                NestedScrollWebView webView = new NestedScrollWebView(this);
+                webView.loadUrl("https://gist.github.com/alexmiragall/0c4c7163f7a17938518ce9794c4a5236");
+                mPageMap.put(pos, webView);
+                return webView;
+            }
         }
         return view;
     }

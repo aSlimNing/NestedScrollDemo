@@ -8,6 +8,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -19,5 +20,5 @@
         <activity android:name=".two.NestingScrollActivity"/>
         <activity android:name=".three.CoordinatorLayoutActivity"/>
     </application>
-
+    <uses-permission android:name="android.permission.INTERNET"/>
 </manifest>
