@@ -10,17 +10,12 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.view.ViewConfiguration;
-import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.Scroller;
 
 import org.cgspine.nestscroll.R;
 import org.cgspine.nestscroll.Util;
 
-/**
- * @author cginechen
- * @date 2016-12-27
- */
 
 public class EventDispatchPlanLayout extends LinearLayout {
     private static final String TAG = "EventDispatchPlanLayout";

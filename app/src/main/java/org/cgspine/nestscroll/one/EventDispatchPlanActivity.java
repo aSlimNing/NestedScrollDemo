@@ -8,10 +8,6 @@ import android.view.MenuItem;
 
 import org.cgspine.nestscroll.R;
 
-/**
- * @author cginechen
- * @date 2016-12-27
- */
 
 public class EventDispatchPlanActivity extends AppCompatActivity {
     private Toolbar mToolbar;
