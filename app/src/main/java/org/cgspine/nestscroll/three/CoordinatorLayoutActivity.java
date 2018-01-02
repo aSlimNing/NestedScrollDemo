@@ -6,6 +6,7 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,11 +15,13 @@ import android.util.SparseArray;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.LinearLayout;
 
 import org.cgspine.nestscroll.MyRecyclerAdapter;
 import org.cgspine.nestscroll.R;
 import org.cgspine.nestscroll.Util;
+import org.cgspine.nestscroll.two.NestedScrollWebView;
 
 /**
  * @author cginechen
@@ -31,27 +34,16 @@ public class CoordinatorLayoutActivity extends AppCompatActivity {
     private LinearLayout mTargetLayout;
     private TabLayout mTabLayout;
     private ViewPager mViewPager;
-    private SparseArray<RecyclerView> mPageMap = new SparseArray<>();
+    private SparseArray<View> mPageMap = new SparseArray<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plan_coordinator);
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(mToolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-
-    mHeaderView = findViewById(R.id.book_header);
-    CoordinatorLayout.LayoutParams headerLp = (CoordinatorLayout.LayoutParams) mHeaderView
-            .getLayoutParams();
-    headerLp.setBehavior(new CoverBehavior(Util.dp2px(this, 30), 0));
-
-    mTargetLayout = (LinearLayout) findViewById(R.id.scroll_view);
-    CoordinatorLayout.LayoutParams targetLp = (CoordinatorLayout.LayoutParams) mTargetLayout
-            .getLayoutParams();
-    targetLp.setBehavior(new TargetBehavior(this, Util.dp2px(this, 70), 0));
-
+        android.app.ActionBar actionBar = getActionBar();
+        if(actionBar!=null){
+            actionBar.hide();
+        }
         mTabLayout = (TabLayout) findViewById(R.id.tab_layout);
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         mViewPager.setAdapter(mPagerAdapter);
@@ -68,14 +60,22 @@ public class CoordinatorLayoutActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private RecyclerView getPageView(int pos) {
-        RecyclerView view = mPageMap.get(pos);
+    private View getPageView(int pos) {
+        View view = mPageMap.get(pos);
         if (view == null) {
-            RecyclerView recyclerView = new RecyclerView(this);
-            recyclerView.setLayoutManager(new LinearLayoutManager(this));
-            recyclerView.setAdapter(new MyRecyclerAdapter());
-            mPageMap.put(pos, recyclerView);
-            return recyclerView;
+            if(pos!=0){
+                RecyclerView recyclerView = new RecyclerView(this);
+                recyclerView.setLayoutManager(new LinearLayoutManager(this));
+                recyclerView.setAdapter(new MyRecyclerAdapter());
+                mPageMap.put(pos, recyclerView);
+                return recyclerView;
+            }
+            else {
+                NestedScrollWebView webView = new NestedScrollWebView(this);
+                webView.loadUrl("https://gist.github.com/alexmiragall/0c4c7163f7a17938518ce9794c4a5236");
+                mPageMap.put(pos, webView);
+                return webView;
+            }
         }
         return view;
     }
